@@ -6,11 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/transaction.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
-      home: TrackerApp(),
+  runApp(MaterialApp(
+    theme: ThemeData(
+      primaryColor: Colors.purple,
+      primarySwatch: Colors.purple,
+      accentColor: Colors.amber,
+      fontFamily: 'Quicksand',
+      textTheme: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+      appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
     ),
-  );
+    home: TrackerApp(),
+  ));
 }
 
 class TrackerApp extends StatelessWidget {
@@ -30,18 +49,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-      id: 't1',
-      title: 'New Phone',
-      amount: 125980,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Subscription',
-      amount: 5000,
-      date: DateTime.now(),
-    ),
+    // Transaction(
+    //   id: 't1',
+    //   title: 'New Phone',
+    //   amount: 125980,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'Subscription',
+    //   amount: 5000,
+    //   date: DateTime.now(),
+    // ),
   ];
 
   void _addNewTransaction(String txTitle, double txAmount) {
