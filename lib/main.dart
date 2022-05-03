@@ -2,6 +2,7 @@ import 'package:expense_tracker/widgets/new_transaction.dart';
 import 'package:expense_tracker/widgets/transaction_list.dart';
 import 'Package:expense_tracker/widgets/new_transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_tracker/widgets/chart.dart';
 
 import 'package:expense_tracker/models/transaction.dart';
 
@@ -63,6 +64,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // ),
   ];
 
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((tx) {
+      return tx.date!.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
+
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
       id: DateTime.now().toString(),
@@ -108,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Chart(_recentTransactions),
             Container(
               width: double.infinity,
               height: 45,
