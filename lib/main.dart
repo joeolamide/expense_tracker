@@ -6,38 +6,35 @@ import 'package:expense_tracker/widgets/chart.dart';
 
 import 'package:expense_tracker/models/transaction.dart';
 
-void main() {
-  runApp(MaterialApp(
-    theme: ThemeData(
-      primaryColor: Colors.purple,
-      primarySwatch: Colors.purple,
-      accentColor: Colors.amber,
-      fontFamily: 'Quicksand',
-      textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: TextStyle(
-              fontFamily: 'OpenSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-      appBarTheme: AppBarTheme(
-          textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              )),
-    ),
-    home: TrackerApp(),
-  ));
-}
+void main() => runApp(MyApp());
 
-class TrackerApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: ('Expense Tracker'),
+      title: 'Expense Tracker',
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+        primarySwatch: Colors.purple,
+        accentColor: Colors.amber,
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+              button: TextStyle(color: Colors.white),
+            ),
+        appBarTheme: AppBarTheme(
+            textTheme: ThemeData.light().textTheme.copyWith(
+                  headline6: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
+      ),
       home: MyHomePage(),
     );
   }
@@ -74,12 +71,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transaction(
       id: DateTime.now().toString(),
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: chosenDate,
     );
 
     setState(() {
@@ -98,6 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
             behavior: HitTestBehavior.opaque,
           );
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx) => tx.id == id);
+    });
   }
 
   @override
@@ -120,16 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            Container(
-              width: double.infinity,
-              height: 45,
-              child: Card(
-                color: Colors.blue,
-                child: Text('CHART!'),
-                elevation: 5,
+            Expanded(
+              child: TransactionList(
+                _userTransactions,
+                _deleteTransaction,
               ),
             ),
-            TransactionList(_userTransactions),
           ],
         ),
       ),
